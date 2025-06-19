@@ -119,10 +119,48 @@ users: {
 3. **Production Start**: `npm run start` - Production server with static file serving
 4. **Database Setup**: `npm run db:push` - Apply schema changes to database
 
+## Multi-Tenant Architecture
+
+The application now supports a comprehensive multi-tenant system with the following features:
+
+### Core Components
+1. **Landing Page**: Unified login for both admins and customers
+2. **Admin Dashboard**: Complete customer management and analytics
+3. **Customer Dashboard**: Self-service customization interface
+4. **Customized Gallery**: Customer-branded instance of the original wedding gallery
+
+### Authentication System
+- **Admin Access**: Username: admin, Password: admin123
+- **Customer Accounts**: Self-service customization with individual branding
+- **Demo Customers**: john_jane, sarah_mike, emma_david (all with password: demo123)
+
+### Customer Customization Features
+- **Branding**: Custom site names, profile images, and logos
+- **Color Schemes**: Primary, secondary, and accent color customization
+- **Content**: Custom welcome messages, descriptions, and footer text
+- **Social Links**: Instagram, Facebook, Twitter, and website integration
+- **Contact Information**: Email, phone, and address management
+
+### Admin Features
+- **Customer Management**: Create, edit, deactivate customer accounts
+- **Analytics Dashboard**: Usage statistics and platform overview
+- **Real-time Monitoring**: Track customer activity and engagement
+
+### Technical Implementation
+- **Multi-tenant Storage**: Separate data isolation for each customer
+- **Dynamic Theming**: CSS variables for real-time color customization
+- **Preserved Functionality**: All original wedding gallery features remain intact
+- **Secure Authentication**: Role-based access control
+
 ## Changelog
 
-Changelog:
-- June 19, 2025. Initial setup
+- June 19, 2025: Initial setup
+- June 19, 2025: Implemented comprehensive multi-tenant system
+  - Added admin dashboard for customer management
+  - Created customer customization interface
+  - Implemented dynamic branding and theming
+  - Preserved all existing wedding gallery functionality
+  - Added demo accounts for testing
 
 ## User Preferences
 
