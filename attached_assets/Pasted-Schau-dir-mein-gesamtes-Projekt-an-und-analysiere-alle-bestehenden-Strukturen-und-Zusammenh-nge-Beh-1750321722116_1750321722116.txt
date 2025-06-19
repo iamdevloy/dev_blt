@@ -1,0 +1,79 @@
+Schau dir mein gesamtes Projekt an und analysiere alle bestehenden Strukturen und Zusammenhänge. Behalte alle bestehenden Konfigurationen und Funktionen strikt bei – nichts darf überschrieben oder verändert werden. Die aktuelle WebApp läuft fehlerfrei und soll als Template dienen.
+
+🔧 Deine Aufgabe:
+Programmiere vollständig und funktionstüchtig ein modulares System, das auf dem bestehenden WebApp-Template basiert. Alle neuen Komponenten müssen voll integriert, sicher, getestet und bereit für den produktiven Einsatz sein.
+
+📌 Neue Funktionen (vollständig programmieren):
+Frontpage & Admin-Dashboard:
+
+Neue Landing-Page mit Login-Funktion.
+
+Admin-Login mit Zugriff auf ein Dashboard:
+
+Kundenkonten erstellen, bearbeiten, deaktivieren und löschen.
+
+Übersicht aller Kunden (Tabelle oder Liste).
+
+Optionale Nutzungsstatistiken anzeigen.
+
+Kunden-Login & Instanzierung:
+
+Jeder Kunde bekommt eine eigene, anpassbare Instanz der WebApp (basiert auf bestehender App).
+
+Nach Login kann der Kunde Inhalte selbstständig anpassen:
+
+Texte (z. B. Titel, Beschreibungen, Abschnitte)
+
+Profilbild und Logo hochladen
+
+Farben und Branding (sofern vorgesehen)
+
+Optionale Links, Social Media, Kontaktdaten
+
+Benutzerverwaltung (Backend):
+
+Sichere Authentifizierung (z. B. JWT oder Sessions).
+
+Admin-Rechte strikt trennen von Kundenrechten.
+
+Speicherung aller benutzerspezifischen Daten in einer Datenbank (z. B. PostgreSQL, Firebase oder MongoDB).
+
+Jeder Kunde sieht nur seine eigene Version der App.
+
+Technik & Architektur:
+
+Verwende moderne Frameworks (z. B. React, Next.js, Express, Tailwind, o. ä.).
+
+Schreibe sauberen, modularen und dokumentierten Code.
+
+Keine bestehenden Funktionen der ursprünglichen WebApp verändern – neue Module anhängen.
+
+Berücksichtige Deployment-Fähigkeit für z. B. Vercel, Netlify, oder Docker.
+
+Usability & UX:
+
+Intuitive Benutzeroberfläche für Kunden.
+
+Vorschau der Änderungen in Echtzeit oder nach Speichern.
+
+Responsives Design für alle Geräte.
+
+Optional (wenn möglich):
+
+Template-Auswahl beim Erstellen eines neuen Kundenaccounts.
+
+Theme-Auswahl (Farbschema, Layout).
+
+Export der individualisierten Seite als statische Version (Download oder Deployment-Link).
+
+📍 Wichtig:
+
+Implementiere alle Funktionen voll funktionstüchtig und einsatzbereit.
+
+Alle Komponenten müssen sofort testbar sein – keine Platzhalter oder Pseudocode.
+
+Verwende ggf. Dummy-Daten oder Beispielkonten zum Testen.
+
+Keine bestehenden Konfigurationen löschen oder verändern.
+
+✳️ Ziel: Eine mandantenfähige, anpassbare WebApp auf Basis der bestehenden Anwendung – bereit für reale Kunden.
