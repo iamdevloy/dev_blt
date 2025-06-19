@@ -4,6 +4,7 @@ import {
   customers, 
   customerSettings, 
   usageStats,
+  weddingGalleries,
   type User, 
   type InsertUser,
   type Admin,
@@ -12,7 +13,9 @@ import {
   type InsertCustomer,
   type CustomerSettings,
   type InsertCustomerSettings,
-  type UsageStats
+  type UsageStats,
+  type WeddingGallery,
+  type InsertWeddingGallery
 } from "@shared/schema";
 
 export interface IStorage {
@@ -45,6 +48,14 @@ export interface IStorage {
   getUsageStats(customerId: number): Promise<UsageStats | undefined>;
   updateUsageStats(customerId: number, updates: Partial<UsageStats>): Promise<UsageStats | undefined>;
   createUsageStats(customerId: number): Promise<UsageStats>;
+  
+  // Wedding gallery methods
+  getWeddingGallery(id: number): Promise<WeddingGallery | undefined>;
+  getWeddingGalleryBySlug(slug: string): Promise<WeddingGallery | undefined>;
+  getWeddingGalleriesByCustomer(customerId: number): Promise<WeddingGallery[]>;
+  createWeddingGallery(gallery: InsertWeddingGallery): Promise<WeddingGallery>;
+  updateWeddingGallery(id: number, updates: Partial<WeddingGallery>): Promise<WeddingGallery | undefined>;
+  deleteWeddingGallery(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -53,11 +64,13 @@ export class MemStorage implements IStorage {
   private customers: Map<number, Customer>;
   private customerSettingsMap: Map<number, CustomerSettings>;
   private usageStatsMap: Map<number, UsageStats>;
+  private weddingGalleriesMap: Map<number, WeddingGallery>;
   private currentUserId: number;
   private currentAdminId: number;
   private currentCustomerId: number;
   private currentSettingsId: number;
   private currentStatsId: number;
+  private currentGalleryId: number;
 
   constructor() {
     this.users = new Map();
@@ -65,11 +78,13 @@ export class MemStorage implements IStorage {
     this.customers = new Map();
     this.customerSettingsMap = new Map();
     this.usageStatsMap = new Map();
+    this.weddingGalleriesMap = new Map();
     this.currentUserId = 1;
     this.currentAdminId = 1;
     this.currentCustomerId = 1;
     this.currentSettingsId = 1;
     this.currentStatsId = 1;
+    this.currentGalleryId = 1;
     
     // Create default admin account
     this.createAdmin({
@@ -272,6 +287,63 @@ export class MemStorage implements IStorage {
     };
     this.usageStatsMap.set(id, stats);
     return stats;
+  }
+
+  // Wedding gallery methods
+  async getWeddingGallery(id: number): Promise<WeddingGallery | undefined> {
+    return this.weddingGalleriesMap.get(id);
+  }
+
+  async getWeddingGalleryBySlug(slug: string): Promise<WeddingGallery | undefined> {
+    return Array.from(this.weddingGalleriesMap.values()).find(
+      (gallery) => gallery.slug === slug,
+    );
+  }
+
+  async getWeddingGalleriesByCustomer(customerId: number): Promise<WeddingGallery[]> {
+    return Array.from(this.weddingGalleriesMap.values()).filter(
+      (gallery) => gallery.customerId === customerId,
+    );
+  }
+
+  async createWeddingGallery(insertGallery: InsertWeddingGallery): Promise<WeddingGallery> {
+    const id = this.currentGalleryId++;
+    const gallery: WeddingGallery = { 
+      id,
+      customerId: insertGallery.customerId,
+      slug: insertGallery.slug,
+      title: insertGallery.title,
+      description: insertGallery.description ?? null,
+      weddingDate: insertGallery.weddingDate ?? null,
+      coupleNames: insertGallery.coupleNames,
+      profileImageUrl: insertGallery.profileImageUrl ?? null,
+      welcomeMessage: insertGallery.welcomeMessage ?? null,
+      customTexts: insertGallery.customTexts ?? null,
+      branding: insertGallery.branding ?? null,
+      mediaItems: insertGallery.mediaItems ?? [],
+      isPublished: insertGallery.isPublished ?? false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.weddingGalleriesMap.set(id, gallery);
+    return gallery;
+  }
+
+  async updateWeddingGallery(id: number, updates: Partial<WeddingGallery>): Promise<WeddingGallery | undefined> {
+    const gallery = this.weddingGalleriesMap.get(id);
+    if (!gallery) return undefined;
+    
+    const updatedGallery = { 
+      ...gallery, 
+      ...updates, 
+      updatedAt: new Date() 
+    };
+    this.weddingGalleriesMap.set(id, updatedGallery);
+    return updatedGallery;
+  }
+
+  async deleteWeddingGallery(id: number): Promise<boolean> {
+    return this.weddingGalleriesMap.delete(id);
   }
 
   private async createDemoCustomers() {

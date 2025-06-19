@@ -27,6 +27,16 @@ export interface Like {
   createdAt: string;
 }
 
+export interface Story {
+  id: string;
+  userName: string;
+  deviceId: string;
+  url: string;
+  type: 'image' | 'video';
+  createdAt: string;
+  viewers: string[];
+}
+
 // Timeline Types
 export interface TimelineEvent {
   id: string;

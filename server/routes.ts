@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertAdminSchema, insertCustomerSchema, insertCustomerSettingsSchema } from "@shared/schema";
+import { insertAdminSchema, insertCustomerSchema, insertCustomerSettingsSchema, insertWeddingGallerySchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -208,6 +208,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const stats = await storage.getUsageStats(customerId);
       
       res.json({ customer, settings, stats });
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Wedding Gallery Routes
+  
+  // Get all galleries for a customer
+  app.get("/api/customer/:customerId/galleries", async (req, res) => {
+    try {
+      const customerId = parseInt(req.params.customerId);
+      const galleries = await storage.getWeddingGalleriesByCustomer(customerId);
+      res.json(galleries);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Get a specific gallery by slug (public route)
+  app.get("/api/gallery/:slug", async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const gallery = await storage.getWeddingGalleryBySlug(slug);
+      
+      if (!gallery || !gallery.isPublished) {
+        return res.status(404).json({ message: "Gallery not found or not published" });
+      }
+      
+      res.json(gallery);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Create a new wedding gallery
+  app.post("/api/customer/:customerId/galleries", async (req, res) => {
+    try {
+      const customerId = parseInt(req.params.customerId);
+      
+      const validatedData = insertWeddingGallerySchema.parse({
+        ...req.body,
+        customerId
+      });
+      
+      // Check if slug is already taken
+      const existingGallery = await storage.getWeddingGalleryBySlug(validatedData.slug);
+      if (existingGallery) {
+        return res.status(400).json({ message: "Slug already exists" });
+      }
+      
+      const gallery = await storage.createWeddingGallery(validatedData);
+      res.status(201).json(gallery);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Validation error", errors: error.errors });
+      }
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Update a wedding gallery
+  app.put("/api/galleries/:id", async (req, res) => {
+    try {
+      const galleryId = parseInt(req.params.id);
+      
+      const validatedData = insertWeddingGallerySchema.partial().parse(req.body);
+      
+      const updatedGallery = await storage.updateWeddingGallery(galleryId, validatedData);
+      
+      if (!updatedGallery) {
+        return res.status(404).json({ message: "Gallery not found" });
+      }
+      
+      res.json(updatedGallery);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Validation error", errors: error.errors });
+      }
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Delete a wedding gallery
+  app.delete("/api/galleries/:id", async (req, res) => {
+    try {
+      const galleryId = parseInt(req.params.id);
+      
+      const deleted = await storage.deleteWeddingGallery(galleryId);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Gallery not found" });
+      }
+      
+      res.json({ message: "Gallery deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

@@ -38,6 +38,25 @@ export const customerSettings = pgTable("customer_settings", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// Wedding galleries table
+export const weddingGalleries = pgTable("wedding_galleries", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").references(() => customers.id).notNull(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  description: text("description"),
+  weddingDate: text("wedding_date"),
+  coupleNames: text("couple_names").notNull(),
+  profileImageUrl: text("profile_image_url"),
+  welcomeMessage: text("welcome_message"),
+  customTexts: jsonb("custom_texts"),
+  branding: jsonb("branding"), // colors, fonts, etc.
+  mediaItems: jsonb("media_items").default('[]').notNull(),
+  isPublished: boolean("is_published").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Usage statistics
 export const usageStats = pgTable("usage_stats", {
   id: serial("id").primaryKey(),
@@ -72,6 +91,12 @@ export const insertCustomerSettingsSchema = createInsertSchema(customerSettings)
   updatedAt: true,
 });
 
+export const insertWeddingGallerySchema = createInsertSchema(weddingGalleries).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -86,6 +111,9 @@ export type Customer = typeof customers.$inferSelect;
 
 export type InsertCustomerSettings = z.infer<typeof insertCustomerSettingsSchema>;
 export type CustomerSettings = typeof customerSettings.$inferSelect;
+
+export type InsertWeddingGallery = z.infer<typeof insertWeddingGallerySchema>;
+export type WeddingGallery = typeof weddingGalleries.$inferSelect;
 
 export type UsageStats = typeof usageStats.$inferSelect;
 

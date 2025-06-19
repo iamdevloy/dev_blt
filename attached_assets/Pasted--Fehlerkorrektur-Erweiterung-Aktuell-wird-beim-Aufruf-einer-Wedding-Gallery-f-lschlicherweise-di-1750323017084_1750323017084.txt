@@ -1,0 +1,75 @@
+ Fehlerkorrektur & Erweiterung:
+
+Aktuell wird beim Aufruf einer Wedding Gallery fälschlicherweise die globale Hauptseite angezeigt. Das System muss so angepasst werden, dass jede Galerie auf die individuellen, im Dashboard gespeicherten Inhalte des zugehörigen Users zugreift – und diese auch speichert.
+
+🔧 Was du jetzt tun sollst:
+1. Benutzerspezifischer Content
+Jede Wedding Gallery muss dynamisch den Content des zugehörigen Users laden:
+
+Profilbild
+
+Texte (z. B. Begrüßung, Beschreibung, Datum)
+
+Farben / Branding (sofern vorhanden)
+
+Die Daten stammen ausschließlich aus dem jeweiligen User-Dashboard.
+
+Es darf keine globalen oder statischen Inhalte anzeigen.
+
+2. Speicherung und Verwaltung von Wedding Galleries
+Ermögliche es, dass mehrere Wedding Galleries pro Nutzer gespeichert werden können.
+
+Jede Galerie hat:
+
+Einen eindeutigen Slug oder Titel (z. B. /gallery/maria-und-max)
+
+Ein zugehöriges Erstellungs-/Bearbeitungsdatum
+
+Die gespeicherten Inhalte aus dem Editor/Dashboard
+
+Alle Inhalte müssen persistent gespeichert werden (z. B. in einer Datenbank, etwa MongoDB, Firebase, PostgreSQL etc.).
+
+Neue Galerien können im Dashboard erstellt, bearbeitet und gelöscht werden.
+
+3. Routing & Zugriff
+Die Wedding Gallery muss über eine dynamische URL aufrufbar sein:
+
+z. B. /gallery/:slug oder /user/:userId/gallery/:slug
+
+Beim Aufruf dieser Route soll:
+
+die entsprechende Galerie aus der Datenbank geladen,
+
+und vollständig personalisiert dargestellt werden.
+
+Falls keine gültigen Daten vorhanden sind:
+
+Zeige eine Fehlermeldung an (z. B. „Diese Galerie existiert nicht“)
+
+oder leite den User zurück auf die Startseite.
+
+4. Frontend-Anpassung
+Die Galerie-Komponente muss komplett dynamisch sein:
+
+keine statischen Texte oder Platzhalter verwenden
+
+Inhalte direkt aus der jeweiligen Galerie-Datenquelle laden
+
+Optional: Vorschaufunktion im Dashboard vor dem Veröffentlichen
+
+5. Zielsetzung:
+Jeder Nutzer kann mehrere Wedding Galleries erstellen, speichern und bearbeiten.
+
+Alle Galerien sind öffentlich abrufbar (z. B. zur Weitergabe an Gäste).
+
+Inhalte stammen immer aus den gespeicherten Nutzerdaten.
+
+Es darf niemals auf globale Standardseiten zurückgegriffen werden.
+
+📍 Wichtig:
+
+Implementiere vollständige Speicherung, Individualisierung und Routing.
+
+Stelle sicher, dass alle Änderungen persistiert und korrekt geladen werden.
+
+Die Funktion muss vollständig getestet, stabil und sofort nutzbar sein.
